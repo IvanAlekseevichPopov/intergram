@@ -10,8 +10,8 @@ services:
       sh -c "npm install
       && npm run build
       && npm run start"
-    environment:
-      TELEGRAM_TOKEN: 7033070973:AAHfqTUwvro2sSabR2Hvjh-Xrqlt56XpUMY
+    env_file:
+      - .env
   nginx:
     image: nginx
     volumes:
