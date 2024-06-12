@@ -69,13 +69,18 @@ io.on('connection', function(socket){
 
 function sendTelegramMessage(chatId, text, parseMode) {
     request
-        // .post('https://webhook.site/81edc8dc-512a-4a7f-a1a9-61f924913632/' + process.env.TELEGRAM_TOKEN + '/sendMessage')
-        .post('https://api.telegram.org/bot' + process.env.TELEGRAM_TOKEN + '/sendMessage')
-        .form({
+        .post(process.env.API_HOST +'/' + process.env.TELEGRAM_TOKEN + '/sendMessage')
+        // .post('https://api.telegram.org/bot' + process.env.TELEGRAM_TOKEN + '/sendMessage')
+        .json({
             "chat_id": chatId,
             "text": text,
             "parse_mode": parseMode
         });
+        // .form({
+        //     "chat_id": chatId,
+        //     "text": text,
+        //     "parse_mode": parseMode
+        // });
 }
 
 app.post('/usage-start', cors(), function(req, res) {

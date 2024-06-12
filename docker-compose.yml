@@ -12,9 +12,3 @@ services:
       && npm run start"
     env_file:
       - .env
-  nginx:
-    image: nginx
-    volumes:
-      - ./:/usr/share/nginx/html
-    ports:
-      - 8080:80
