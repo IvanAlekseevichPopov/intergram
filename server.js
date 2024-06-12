@@ -69,7 +69,7 @@ io.on('connection', function(socket){
 
 function sendTelegramMessage(chatId, text, parseMode) {
     request
-        .post(process.env.API_HOST +'/' + process.env.TELEGRAM_TOKEN + '/sendMessage')
+        .post(process.env.API_HOST + '/message')
         // .post('https://api.telegram.org/bot' + process.env.TELEGRAM_TOKEN + '/sendMessage')
         .json({
             "chat_id": chatId,
