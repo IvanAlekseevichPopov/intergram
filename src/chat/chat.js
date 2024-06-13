@@ -48,7 +48,7 @@ export default class Chat extends Component {
         );
     }
 
-    handleKeyPress = (e) => {pristine
+    handleKeyPress = (e) => {
         if (e.keyCode == 13 && this.input.value) {
             let text = this.input.value;
             this.socket.send({text, from: 'visitor', visitorName: this.props.conf.visitorName});
