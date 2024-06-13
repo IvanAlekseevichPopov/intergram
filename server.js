@@ -12,31 +12,35 @@ app.use(bodyParser.json());
 
 // handle admin Telegram messages
 app.post('/hook', function(req, res){
+    console.log("Hook request");
+    console.log(req.body);
     try {
-        const message = req.body.message || req.body.channel_post;
-        const chatId = message.chat.id;
-        const name = message.chat.first_name || message.chat.title || "admin";
-        const text = message.text || "";
-        const reply = message.reply_to_message;
+        // const message = req.body.message || req.body.channel_post;
+        const chatId = req.body.chat_id;
+        const name = req.body.manager_name || "admin";
+        const text = req.body.text || "";
+        // const reply = message.reply_to_message;
 
-        if (text.startsWith("/start")) {
-            console.log("/start chatId " + chatId);
-            sendTelegramMessage(chatId,
-                "*Welcome to Intergram* \n" +
-                "Your unique chat id is `" + chatId + "`\n" +
-                "Use it to link between the embedded chat and this telegram chat",
-                "Markdown");
-        } else if (reply) {
-            let replyText = reply.text || "";
-            let userId = replyText.split(':')[0];
-            io.to(userId).emit(chatId + "-" + userId, {name, text, from: 'admin'});
-        } else if (text){
-            io.emit(chatId, {name, text, from: 'admin'});
-        }
+        // if (text.startsWith("/start")) {
+        //     console.log("/start chatId " + chatId);
+        //     sendTelegramMessage(chatId,
+        //         "*Welcome to Intergram* \n" +
+        //         "Your unique chat id is `" + chatId + "`\n" +
+        //         "Use it to link between the embedded chat and this telegram chat",
+        //         "Markdown");
+        // } else
+        // if (reply) {
+            // let replyText = reply.text || "";
+            // let userId = replyText.split(':')[0];
+            io.to(chatId).emit(chatId, {name, text, from: 'admin'});
+        // } else if (text){
+        //     io.emit(chatId, {name, text, from: 'admin'});
+        // }
 
     } catch (e) {
         console.error("hook error", e, req.body);
     }
+    res.json = {"ok": true}
     res.statusCode = 200;
     res.end();
 });
@@ -45,36 +49,35 @@ app.post('/hook', function(req, res){
 io.on('connection', function(socket){
 
     socket.on('register', function(registerMsg){
-        let userId = registerMsg.userId;
         let chatId = registerMsg.chatId;
         let messageReceived = false;
-        socket.join(userId);
-        console.log("useId " + userId + " connected to chatId " + chatId);
+        socket.join(chatId);
+        console.log(" connected to chatId " + chatId);
 
         socket.on('message', function(msg) {
             messageReceived = true;
-            io.to(userId).emit(chatId + "-" + userId, msg);
+            io.to(chatId).emit(chatId, msg);
             let visitorName = msg.visitorName ? "[" + msg.visitorName + "]: " : "";
-            sendTelegramMessage(chatId, userId + ":" + visitorName + " " + msg.text);
+            sendTelegramMessage(chatId, visitorName + " " + msg.text);
         });
 
         socket.on('disconnect', function(){
             if (messageReceived) {
-                sendTelegramMessage(chatId, userId + " has left");
+                sendTelegramMessage(chatId,  chatId + " has left");
             }
         });
     });
-
 });
 
 function sendTelegramMessage(chatId, text, parseMode) {
+    //TODO retries here
     request
-        .post(process.env.API_HOST + '/message')
+        .post(process.env.API_HOST + '/messages', null, (response) => {console.log(response)})
         // .post('https://api.telegram.org/bot' + process.env.TELEGRAM_TOKEN + '/sendMessage')
         .json({
             "chat_id": chatId,
             "text": text,
-            "parse_mode": parseMode
+            // "parse_mode": parseMode
         });
         // .form({
         //     "chat_id": chatId,

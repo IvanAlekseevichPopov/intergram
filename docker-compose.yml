@@ -12,3 +12,24 @@ services:
       && npm run start"
     env_file:
       - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.node.rule=Host(`node.local`)"
+      - "traefik.http.services.node.loadbalancer.server.port=3000"
+    networks:
+      - traefik-net
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  traefik-net:
+    external: true

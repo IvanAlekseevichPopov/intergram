@@ -14,8 +14,7 @@ if (confString) {
 
 render(
     <Chat
-        chatId={getUrlParameter('id')}
-        userId={getUserId()}
+        chatId={getChatId()}
         host={getUrlParameter('host')}
         conf={conf}
     />,
@@ -29,9 +28,9 @@ function getUrlParameter(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-function getUserId () {
+function getChatId () {
     if (store.enabled) {
-        return store.get('userId') || store.set('userId', generateRandomId());
+        return store.get('chatId') || store.set('chatId', generateRandomId());
     } else {
         return generateRandomId();
     }
