@@ -1,5 +1,6 @@
 
 export const defaultConfiguration = {
+    horizontalPosition: 'right', //right or left
     titleClosed: 'Click to chat!',
     titleOpen: 'Let\'s chat!',
     closedStyle: 'chat', // button or chat
