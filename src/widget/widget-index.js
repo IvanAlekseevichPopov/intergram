@@ -9,8 +9,8 @@ if (window.attachEvent) {
 }
 
 function injectChat() {
-    if (!window.intergramId) {
-        console.error('Please set window.intergramId (see example at github.com/idoco/intergram)');
+    if (!window.projectId) {
+        console.error('Please set window.projectId (see example at github.com/idoco/intergram)');
     } else {
         let root = document.createElement('div');
         root.id = 'intergramRoot';
@@ -21,7 +21,7 @@ function injectChat() {
         const conf = { ...defaultConfiguration, ...window.intergramCustomizations };
 
         render(
-            <Widget intergramId={window.intergramId}
+            <Widget projectId={window.projectId}
                     host={host}
                     isMobile={window.screen.width < 500}
                     iFrameSrc={iFrameSrc}

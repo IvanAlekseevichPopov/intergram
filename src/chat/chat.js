@@ -22,10 +22,11 @@ export default class Chat extends Component {
     componentDidMount() {
         this.socket = io.connect();
         this.socket.on('connect', () => {
-            this.socket.emit('register', {chatId: this.props.chatId});
+            this.socket.emit('register', {projectId: this.props.projectId, chatId: this.props.chatId });
         });
-        this.socket.on(this.props.chatId, this.incomingMessage);
-        // this.socket.on(this.props.chatId+'-'+this.props.userId, this.incomingMessage);
+        //TODO - why 2 subscriptions??
+        this.socket.on(this.props.projectId, this.incomingMessage);
+        this.socket.on(this.props.projectId+'-'+this.props.chatId, this.incomingMessage);
 
         if (!this.state.messages.length) {
             this.writeToMessages({text: this.props.conf.introMessage, from: 'admin'});

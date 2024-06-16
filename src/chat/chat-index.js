@@ -14,6 +14,7 @@ if (confString) {
 
 render(
     <Chat
+        projectId={getUrlParameter('id')}
         chatId={getChatId()}
         host={getUrlParameter('host')}
         conf={conf}
@@ -37,5 +38,6 @@ function getChatId () {
 }
 
 function generateRandomId() {
+    //TODO более длинный id
     return Math.random().toString(36).substr(2, 6);
 }

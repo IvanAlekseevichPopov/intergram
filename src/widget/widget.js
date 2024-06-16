@@ -41,7 +41,7 @@ export default class Widget extends Component {
             wrapperStyle = mobileOpenWrapperStyle; // open mobile wrapper should have no border
         }
 
-        if(conf.horizontalPosition === 'right') {
+        if(conf.horizontalPosition === 'left') {
             wrapperStyle.left = wrapperStyle.right;
             wrapperStyle.right = null;
         }
