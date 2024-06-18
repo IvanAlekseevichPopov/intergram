@@ -18,13 +18,16 @@ export default class MessageArea extends Component {
         return (
             <ol class="chat">
                 {props.messages.map(({name, text, from, time}) => {
+                    text = text.replace(/\bhttps?:\/\/\S+/gi, '<a href="$&" target="_blank" rel="nofollow">$&</a>');
+                    text = name ? name + ': ' + text : text
+
                     if (from === 'visitor') {
                         name = props.conf.visitorPronoun;
                     }
                     return (
                         <li class={from}>
                             <div class="msg">
-                                <p>{name ? name + ': ' + text : text}</p>
+                                <p dangerouslySetInnerHTML={{ __html: text }} />
                                 { (props.conf.displayMessageTime) ?
                                     <div class="time">
                                         {
