@@ -38,22 +38,31 @@ export default class Chat extends Component {
             <div>
                 <MessageArea messages={state.messages} conf={this.props.conf}/>
 
-                <input class="textarea" type="text" placeholder={this.props.conf.placeholderText}
-                       ref={(input) => { this.input = input }}
-                       onKeyPress={this.handleKeyPress}/>
 
-                <a class="banner" href="https://github.com/idoco/intergram" target="_blank">
-                    Powered by <b>Intergram</b>&nbsp;
-                </a>
+                <div class="user-input-block">
+                    <input class="textarea" type="text" placeholder={this.props.conf.placeholderText}
+                           ref={(input) => {
+                               this.input = input
+                           }}
+                           onKeyPress={this.handleKeyPress}/>
+                    <button class="send-message" aria-disabled="false" onClick={this.sendMessage}>
+                        <i size="20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16"
+                             style={{color: this.props.conf.mainColor}}>
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="m4.394 14.7 9.356-5.4c1-.577 1-2.02 0-2.598L4.394 1.299a1.5 1.5 0 0 0-2.25 1.3v3.438l4.059 1.088c.494.132.494.833 0 .966l-4.06 1.087v4.224a1.5 1.5 0 0 0 2.25 1.299"
+                                  clip-rule="evenodd">
+                            </path>
+                        </svg>
+                    </i></button>
+                </div>
             </div>
         );
     }
 
     handleKeyPress = (e) => {
         if (e.keyCode == 13 && this.input.value) {
-            let text = this.input.value;
-            this.socket.send({text, from: 'visitor', visitorName: this.props.conf.visitorName});
-            this.input.value = '';
+            this.sendMessage()
 
             // if (this.autoResponseState === 'pristine') {
             //
@@ -73,6 +82,12 @@ export default class Chat extends Component {
             // }
         }
     };
+
+    sendMessage = () => {
+        let text = this.input.value;
+        this.socket.send({text, from: 'visitor', visitorName: this.props.conf.visitorName});
+        this.input.value = '';
+    }
 
     incomingMessage = (msg) => {
         this.writeToMessages(msg);

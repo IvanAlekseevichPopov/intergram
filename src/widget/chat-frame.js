@@ -10,7 +10,6 @@ export default class ChatFrame extends Component {
     render({projectId, host, iFrameSrc, isMobile, conf},{}) {
         let dynamicConf = window.intergramOnOpen || {}; // these configuration are loaded when the chat frame is opened
         let encodedConf = encodeURIComponent(JSON.stringify({...conf, ...dynamicConf}));
-        console.log(projectId);
         return (
             <iframe src={iFrameSrc + '?id=' + projectId + '&host=' + host + '&conf=' + encodedConf }
                     width='100%'
