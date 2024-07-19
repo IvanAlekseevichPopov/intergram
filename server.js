@@ -78,7 +78,7 @@ function sendMessage(projectId, chatId, text) {
     console.log("Project id: " + projectId);
     //TODO retries here
     request
-        .post(process.env.API_HOST + '/' + projectId + '/messages', null, (response) => {
+        .post(process.env.API_HOST + '/webchat/' + projectId + '/messages', null, (response) => {
             console.log(response)
         })
         .json({

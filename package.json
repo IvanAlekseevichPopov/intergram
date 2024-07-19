@@ -1,7 +1,7 @@
 {
   "name": "intergram",
-  "version": "0.0.1",
-  "description": "A live chat widget linked to your telegram messenger",
+  "version": "0.1.0",
+  "description": "A live chat widget with simple api to your backend",
   "engines": {
     "node": "6.9.1",
     "npm": "3.10.8"
